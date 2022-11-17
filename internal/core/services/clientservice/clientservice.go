@@ -47,13 +47,25 @@ func (cs *ClientService) ChangeBalance(clientId int, diff float64) (*domain.Clie
 		return nil, err
 	}
 
-	client, err = cs.clientRepo.UpdateBalance(client)
+	client, err = cs.clientRepo.UpdateClient(client)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_ = cs.historyRepo.Save(client)
+	_ = cs.historyRepo.Save(client.Id, diff)
+
+	return client, nil
+}
+
+func (cs *ClientService) Create() (*domain.Client, error) {
+	client := &domain.Client{Balance: 0}
+
+	client, err := cs.clientRepo.CreateClient(client)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return client, nil
 }

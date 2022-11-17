@@ -62,3 +62,14 @@ func (h *HttpHandler) ChangeBalance(c *gin.Context) {
 
 	c.JSON(200, client)
 }
+
+func (h *HttpHandler) Create(c *gin.Context) {
+	client, err := h.clientService.Create()
+
+	if err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(200, client)
+}
